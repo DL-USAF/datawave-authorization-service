@@ -21,6 +21,7 @@
         <start-class>datawave.microservice.authorization.AuthorizationService</start-class>
         <version.authorization-api>4.0.0</version.authorization-api>
         <version.jaxb>2.3.3</version.jaxb>
+        <version.keycloak>21.0.1</version.keycloak>
         <version.microservice.hazelcast-client>4.0.0</version.microservice.hazelcast-client>
         <version.microservice.starter>4.0.0</version.microservice.starter>
         <version.zookeeper>3.8.0</version.zookeeper>
@@ -81,6 +82,11 @@
         <dependency>
             <groupId>gov.nsa.datawave.microservice</groupId>
             <artifactId>spring-boot-starter-datawave</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-admin-client</artifactId>
+            <version>${version.keycloak}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
