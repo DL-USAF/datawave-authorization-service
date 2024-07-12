@@ -13,6 +13,7 @@ public class KeycloakDULProperties {
     private String realmName = "baby-yoda";
     private String clientId = "datawave-authentication";
     private String clientSecret = "WtL2v8SL3ZoFqp32U2YsekauGij95f4z";
+    private String scope = "openid";
     
     public String getUrl() {
         return url;
@@ -44,5 +45,13 @@ public class KeycloakDULProperties {
     
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
+    }
+    
+    public String getScope() {
+        return scope;
+    }
+    
+    public void setScope(String scope) {
+        this.scope = scope;
     }
 }
