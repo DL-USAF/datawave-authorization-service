@@ -45,11 +45,8 @@ public class JsdDatawaveUserLookup {
     
     private DatawaveUser buildUser(SubjectIssuerDNPair dn) {
         logger.info("Inside JSD build user...");
-        logger.info(String.format("DN Info:%s", dn.toString()));
         logger.info(String.format("Database Address:%s", jsdDULProperties.getDbAddr()));
         logger.info(String.format("Database Name:%s", jsdDULProperties.getDbName()));
-        logger.info(String.format("Database User:%s", jsdDULProperties.getDbUser()));
-        logger.info(String.format("Database Password:%s", jsdDULProperties.getDbPassword()));
         UserType userType = UserType.USER;
         
         List<String> auths = new ArrayList<String>();
@@ -62,6 +59,7 @@ public class JsdDatawaveUserLookup {
             
             // no user found matching the cert, cannot continue
             if (personGuid == -1) {
+            	// TODO need to replace this with the right way of saying NO AUTHORIZATION
                 return new DatawaveUser(dn, userType, null, null, null, System.currentTimeMillis());
             }
             
@@ -96,7 +94,7 @@ public class JsdDatawaveUserLookup {
             }
             
             if (jsdDULProperties.isReleasableTosEnabled()) {
-                List<String> releasableTos = executeQuery(connection, personGuid, "releasable_to", "releasable_to");
+                List<String> releasableTos = getReleasableTos(connection, personGuid);
                 logger.info("Releasable To:");
                 releasableTos.stream().forEach(rt -> logger.info(rt));
                 auths.addAll(releasableTos);
@@ -223,6 +221,19 @@ public class JsdDatawaveUserLookup {
     }
     
     /**
+     * Get the list of releasable tos from the database for the specific user.
+     * 
+     * @param conn
+     * @param personGuid
+     * @return
+     * @throws SQLException
+     */
+    private List<String> getReleasableTos(Connection conn, int personGuid) throws SQLException {
+    	logger.info("getting the releasable tos...");
+    	return executeQuery(conn, personGuid, "releasable_to", "releasable_to");
+    }
+    
+    /**
      * Executes the query against the mxs_aces schema,
      * 
      * @param conn
@@ -297,9 +308,8 @@ public class JsdDatawaveUserLookup {
             if (i < myList.size() - 1) {
                 returnVal += ",";
             }
-            
-            returnVal += ")";
         }
+        returnVal += ")";
         logger.info(String.format("List conversion:%s", returnVal));
         return returnVal;
     }
